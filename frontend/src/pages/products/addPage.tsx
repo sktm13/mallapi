@@ -1,14 +1,14 @@
 import AddComponent from "../../components/products/addComponent";
 
 function AddPage() {
-    return (
-        <div className="p-4 w-full bg-white">
-            <div className="text-3xl font-extrabold">
-                Products Add Page
-            </div>
-            <AddComponent/>
-        </div>
-    );
+  return (
+    <div className="w-full">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-3xl font-bold mb-6">Add Product</h1>
+        <AddComponent />
+      </div>
+    </div>
+  );
 }
 
 export default AddPage;

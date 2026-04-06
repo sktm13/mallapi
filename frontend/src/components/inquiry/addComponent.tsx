@@ -1,35 +1,46 @@
 import { useState, type ChangeEvent } from "react";
-import { postAdd } from "../../api/todoApi";
+import { postAdd } from "../../api/inquiryApi";
 import ResultModal from "../common/resultModal";
 import useCustomMove from "../../hooks/useCustomMove";
+import useCustomLogin from "../../hooks/useCustomLogin";
 
-const initState: TodoAdd = {
+
+
+const initState: InquiryAdd = {
     title: '',
-    writer: '',
-    dueDate: '',
-    complete: false
+    content: '',
+    writer: ''
 }
 
 function AddComponent() {
 
-    const [todo, setTodo] = useState<TodoAdd>({ ...initState })
+    const { loginState } = useCustomLogin();
+
+    const [inquiry, setInquiry] = useState<InquiryAdd>({
+        title: '',
+        content: '',
+        writer: loginState.email // 자동 세팅
+    });
+
     const [result, setResult] = useState<number | null>(null)
 
     const { moveToList } = useCustomMove()
 
-    const handleChangeTodo = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleChangeInquiry = (
+        e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
         const { name, value } = e.target;
-        setTodo((prevState) => ({
+        setInquiry((prevState) => ({
             ...prevState,
             [name]: value
         }));
     }
 
     const handleClickAdd = (): void => {
-        postAdd(todo)
+        postAdd(inquiry)
             .then(result => {
-                setResult(result.TNO)
-                setTodo({ ...initState })
+                setResult(result.INO)
+                setInquiry({ ...initState })
             }).catch(e => {
                 console.error(e)
             })
@@ -46,7 +57,7 @@ function AddComponent() {
             {result && (
                 <ResultModal
                     title="등록 완료"
-                    content={`${result}번 등록 완료`}
+                    content={`${result}번 문의 등록 완료`}
                     callbackFn={closeModal}
                 />
             )}
@@ -62,36 +73,22 @@ function AddComponent() {
                     <input
                         name="title"
                         type="text"
-                        value={todo.title}
-                        onChange={handleChangeTodo}
+                        value={inquiry.title}
+                        onChange={handleChangeInquiry}
                         className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-400"
                     />
                 </div>
 
-                {/* WRITER */}
+                {/* CONTENT 추가 */}
                 <div>
                     <label className="block text-sm font-medium mb-1">
-                        Writer
+                        Content
                     </label>
-                    <input
-                        name="writer"
-                        type="text"
-                        value={todo.writer}
-                        onChange={handleChangeTodo}
-                        className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-400"
-                    />
-                </div>
-
-                {/* DUEDATE */}
-                <div>
-                    <label className="block text-sm font-medium mb-1">
-                        Due Date
-                    </label>
-                    <input
-                        name="dueDate"
-                        type="date"
-                        value={todo.dueDate}
-                        onChange={handleChangeTodo}
+                    <textarea
+                        name="content"
+                        value={inquiry.content}
+                        onChange={handleChangeInquiry}
+                        rows={4}
                         className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-400"
                     />
                 </div>

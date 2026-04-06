@@ -5,6 +5,7 @@ import BasicLayout from "../layouts/basicLayout";
 import todoRouter from "./todoRouter";
 import productsRouter from "./productsRouter";
 import memberRouter from "./memberRouter";
+import inquiryRouter from "./inquiryRouter";
 
 const Loading = () => <div>Loading....</div>
 
@@ -27,7 +28,8 @@ const router = createBrowserRouter([
                 element: <Suspense fallback={<Loading />}><About /></Suspense>
             },
             todoRouter(),
-            productsRouter()
+            productsRouter(),
+            inquiryRouter()
 
         ]
     },

@@ -1,26 +1,15 @@
 import { Outlet } from "react-router";
 import BasicMenu from "../components/menus/basicMenu";
-import CartComponent from "../components/menus/cartComponent";
 
 function BasicLayout() {
-
-
     return (
-        <>
-
+        <div className="min-h-screen flex flex-col">
             <BasicMenu />
 
-            <div className="bg-white my-5 w-full flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
-                <main className="bg-sky-300 md:w-2/3 lg:w-3/4 px-5 py-40">
-                    <Outlet />
-                </main>
-                <aside className="bg-green-300 md:w-1/3 lg:w-1/4 px-5 flex py-5">
-                    <CartComponent />
-                </aside>
-
-            </div>
-        </>
-
+            <main className="flex-1 bg-white">
+                <Outlet />
+            </main>
+        </div>
     );
 }
 

@@ -1,61 +1,57 @@
 import { useEffect, useState, type ChangeEvent } from "react";
-import { deleteOne, getOne, putOne } from "../../api/todoApi";
+import { deleteOne, getOne, putOne } from "../../api/inquiryApi";
 import useCustomMove from "../../hooks/useCustomMove";
 import ResultModal from "../common/resultModal";
 
-const initState: Todo = {
-  tno: 0,
+const initState: Inquiry = {
+  ino: 0,
   title: "",
+  content: "",
   writer: "",
-  dueDate: null,
-  complete: false,
+  status: "",
+  reply: null,
+  createdDate: "",
 };
 
-const ModifyComponent = ({ tno }: { tno: number }) => {
-  const [todo, setTodo] = useState<Todo>(initState);
+const ModifyComponent = ({ ino }: { ino: number }) => {
+
+  const [inquiry, setInquiry] = useState<Inquiry>(initState);
   const [result, setResult] = useState<string | null>(null);
 
   const { moveToList, moveToRead } = useCustomMove();
 
   useEffect(() => {
-    getOne(tno).then((data) => {
-      setTodo(data);
+    getOne(ino).then((data) => {
+      setInquiry(data);
     });
-  }, [tno]);
+  }, [ino]);
 
-  const handleChangeTodo = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeInquiry = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
 
-    setTodo((prev) => ({
+    setInquiry((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  const handleChangeTodoComplete = (e: ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
-
-    setTodo((prev) => ({
-      ...prev,
-      complete: value === "Y",
-    }));
-  };
-
   const handleClickModify = () => {
-    const todoModify: TodoModify = {
-      tno: todo.tno,
-      title: todo.title,
-      dueDate: todo.dueDate,
-      complete: todo.complete,
+
+    const inquiryModify: InquiryModify = {
+      ino: inquiry.ino,
+      title: inquiry.title,
+      content: inquiry.content,
     };
 
-    putOne(todoModify).then(() => {
+    putOne(inquiryModify).then(() => {
       setResult("Modified");
     });
   };
 
   const handleClickDelete = () => {
-    deleteOne(tno).then(() => {
+    deleteOne(ino).then(() => {
       setResult("Deleted");
     });
   };
@@ -64,7 +60,7 @@ const ModifyComponent = ({ tno }: { tno: number }) => {
     if (result === "Deleted") {
       moveToList();
     } else {
-      moveToRead(tno);
+      moveToRead(ino);
     }
   };
 
@@ -84,8 +80,20 @@ const ModifyComponent = ({ tno }: { tno: number }) => {
         <div className="text-sm text-gray-400 mb-1">Title</div>
         <input
           name="title"
-          value={todo.title}
-          onChange={handleChangeTodo}
+          value={inquiry.title}
+          onChange={handleChangeInquiry}
+          className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200"
+        />
+      </div>
+
+      {/* 내용 🔥 */}
+      <div className="mb-6">
+        <div className="text-sm text-gray-400 mb-1">Content</div>
+        <textarea
+          name="content"
+          value={inquiry.content}
+          onChange={handleChangeInquiry}
+          rows={4}
           className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200"
         />
       </div>
@@ -93,36 +101,10 @@ const ModifyComponent = ({ tno }: { tno: number }) => {
       {/* 정보 */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 border-t pt-6">
 
-        {/* TNO */}
-        <InfoItem label="Todo No" value={todo.tno} />
-
-        {/* Writer */}
-        <InfoItem label="Writer" value={todo.writer} />
-
-        {/* DueDate */}
-        <div>
-          <div className="text-sm text-gray-400 mb-1">Due Date</div>
-          <input
-            name="dueDate"
-            type="date"
-            value={todo.dueDate || ""}
-            onChange={handleChangeTodo}
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200"
-          />
-        </div>
-
-        {/* Status */}
-        <div>
-          <div className="text-sm text-gray-400 mb-1">Status</div>
-          <select
-            value={todo.complete ? "Y" : "N"}
-            onChange={handleChangeTodoComplete}
-            className="w-full px-4 py-3 rounded-xl border border-gray-300"
-          >
-            <option value="Y">Completed</option>
-            <option value="N">Not Yet</option>
-          </select>
-        </div>
+        <InfoItem label="Inquiry No" value={inquiry.ino} />
+        <InfoItem label="Writer" value={inquiry.writer} />
+        <InfoItem label="Status" value={inquiry.status} />
+        <InfoItem label="Created Date" value={inquiry.createdDate.substring(0, 10)} />
 
       </div>
 

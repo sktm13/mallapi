@@ -1,42 +1,53 @@
 interface PageComponentProps<T> {
-    serverData: PageResponseDTO<T>,
-    movePage: ({ page }: PageParam) => void
+  serverData: PageResponseDTO<T>;
+  movePage: ({ page }: PageParam) => void;
 }
 
-
 function PageComponent({ serverData, movePage }: PageComponentProps<any>) {
+  return (
+    <div className="flex justify-center items-center gap-2 mt-8">
 
+      {/* Prev */}
+      {serverData.prev && (
+        <button
+          onClick={() => movePage({ page: serverData.prevPage })}
+          className="px-3 py-2 rounded-lg border border-gray-300 text-sm text-gray-600 hover:bg-gray-100 transition"
+        >
+          ←
+        </button>
+      )}
 
-    return (
-        <div className="m-6 flex justify-center">
+      {/* 페이지 번호 */}
+      {serverData.pageNumList.map((pageNum) => {
+        const isCurrent = serverData.current === pageNum;
 
-            {serverData.prev &&
-                <div
-                    className="m-2 p-2 w-16 text-center  font-bold text-blue-400 "
-                    onClick={() => movePage({ page: serverData.prevPage })}>
-                    Prev </div>
-            }
+        return (
+          <button
+            key={pageNum}
+            onClick={() => movePage({ page: pageNum })}
+            className={`
+              px-4 py-2 rounded-lg text-sm font-medium transition
+              ${isCurrent
+                ? "bg-black text-white"
+                : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-100"}
+            `}
+          >
+            {pageNum}
+          </button>
+        );
+      })}
 
-            {serverData.pageNumList.map(pageNum =>
-                <div
-                    key={pageNum}
-                    className={`m-2 p-2 w-12  text-center rounded shadow-md text-white ${serverData.current === pageNum ? 'bg-gray-500' : 'bg-blue-400'}`}
-                    onClick={() => movePage({ page: pageNum })}>
-                    {pageNum}
-                </div>
-            )}
-
-            {serverData.next &&
-                <div
-                    className="m-2 p-2 w-16 text-center font-bold text-blue-400"
-                    onClick={() => movePage({ page: serverData.nextPage })}>
-                    Next
-                </div>
-            }
-        </div>
-
-
-    );
+      {/* Next */}
+      {serverData.next && (
+        <button
+          onClick={() => movePage({ page: serverData.nextPage })}
+          className="px-3 py-2 rounded-lg border border-gray-300 text-sm text-gray-600 hover:bg-gray-100 transition"
+        >
+          →
+        </button>
+      )}
+    </div>
+  );
 }
 
 export default PageComponent;

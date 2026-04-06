@@ -9,8 +9,12 @@ function ListPage() {
     const size: string | null = queryParams.get("size")
     
     return (
-        <div className="bg-white w-full">
-            <div className="text-4xl">Todo List Page {page} {size}</div>
+        <div className="w-full px-2">
+
+            <div className="text-4xl mb-4">
+                Todo List Page {page} {size}
+            </div>
+
             <ListComponent/>
         </div>
     );

@@ -1,31 +1,45 @@
-import { Outlet, useNavigate } from "react-router"
+import { Outlet, useLocation, useNavigate } from "react-router";
 
 function IndexPage() {
-    const navigate = useNavigate()
-    const handleClickList = () => { navigate({ pathname: 'list' }) }
-    const handleClickAdd = () => { navigate({ pathname: 'add' }) }
-    return (
-        <div>
-            Products
-            <div className="w-full flex m-2 p-2 ">
-                <div
-                    className="text-xl m-1 p-2 w-20 font-extrabold text-center underline"
-                    onClick={handleClickList}
-                >
-                    LIST
-                </div>
-                <div
-                    className="text-xl m-1 p-2 w-20 font-extrabold text-center underline"
-                    onClick={handleClickAdd}
-                >
-                    ADD
-                </div>
-            </div>
-            <div className="flex flex-wrap w-full">
-                <Outlet/>
-            </div>
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const isList = location.pathname.includes("/list");
+  const isAdd = location.pathname.includes("/add");
+
+  return (
+    <div className="w-full max-w-6xl mx-auto px-4 py-8">
+      <div className="text-3xl font-bold text-center mb-8">Products</div>
+
+      <div className="flex justify-center border-b border-gray-200 mb-8">
+        <div
+          onClick={() => navigate({ pathname: "list" })}
+          className={`cursor-pointer px-6 py-3 text-sm font-semibold transition ${
+            isList
+              ? "border-b-2 border-black text-black"
+              : "text-gray-400 hover:text-black"
+          }`}
+        >
+          List
         </div>
-    );
+
+        <div
+          onClick={() => navigate({ pathname: "add" })}
+          className={`cursor-pointer px-6 py-3 text-sm font-semibold transition ${
+            isAdd
+              ? "border-b-2 border-black text-black"
+              : "text-gray-400 hover:text-black"
+          }`}
+        >
+          Add
+        </div>
+      </div>
+
+      <div className="w-full">
+        <Outlet />
+      </div>
+    </div>
+  );
 }
 
 export default IndexPage;

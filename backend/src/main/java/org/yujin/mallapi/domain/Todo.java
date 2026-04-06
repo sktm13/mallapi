@@ -32,11 +32,6 @@ public class Todo {
     private boolean complete;
     private LocalDate dueDate;
     
-    // test코드에 
-    // todo.changeTitle("Update Title...");
-    // todo.changeComplete(true);
-    // todo.changeDueDate(java.time.LocalDate.of(2024, 10, 10));
-    // 위 세개의 change 메소드가 만들어졌어 이 메소드를 이 도메인에서 만들어줘
     public void changeTitle(String title) {
         this.title = title;
     }

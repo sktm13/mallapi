@@ -1,4 +1,4 @@
-import AddComponent from "../../components/todo/addComponent";
+import AddComponent from "../../components/inquiry/addComponent";
 
 function AddPage() {
     return ( 

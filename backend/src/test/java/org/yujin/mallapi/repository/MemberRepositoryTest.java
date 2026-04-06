@@ -12,15 +12,14 @@ import lombok.extern.log4j.Log4j2;
 @SpringBootTest
 @Log4j2
 public class MemberRepositoryTest {
-    
+
     @Autowired
     private MemberRepository memberRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
-    //데이터 주입
+    // 데이터 주입
     @Test
     public void testInsertMember() {
         for (int i = 0; i < 10; i++) {
@@ -44,11 +43,26 @@ public class MemberRepositoryTest {
         }
     }
 
+    // admin@aaa.com에 ADMIN권한 주입
+    @Test
+    public void testInsertAdmin() {
+        Member member = Member.builder()
+                .email("admin@aaa.com")
+                .pw(passwordEncoder.encode("1111"))
+                .nickname("ADMIN")
+                .build();
+        member.addRole(MemberRole.USER);
+        member.addRole(MemberRole.MANAGER);
+        member.addRole(MemberRole.ADMIN);
+
+        memberRepository.save(member);
+    }
+
     @Test
     public void testRead() {
 
         String email = "user9@aaa.com";
-        
+
         Member member = memberRepository.getWithRoles(email);
 
         log.info("-----------------");

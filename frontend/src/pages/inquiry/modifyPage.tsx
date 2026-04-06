@@ -1,14 +1,14 @@
 import { useParams } from "react-router";
-import ModifyComponent from "../../components/todo/modifyComponent";
+import ModifyComponent from "../../components/inquiry/modifyComponent";
 
 function ModifyPage() {
-  const { tno } = useParams();
+  const { ino } = useParams();
 
   return (
     <div className="w-full max-w-4xl mx-auto px-6 py-10">
       <h1 className="text-3xl font-bold mb-6">Modify Todo</h1>
 
-      <ModifyComponent tno={Number(tno)} />
+      <ModifyComponent ino={Number(ino)} />
     </div>
   );
 }
