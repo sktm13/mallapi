@@ -1,9 +1,10 @@
 ## 프로젝트 소개
 Spring Boot API 서버와 React를 활용해 구현한 쇼핑몰 서비스입니다.  
 
-강의를 기반으로 시작했으며,
+강의를 기반으로 시작하여,
 
-문의 기능 추가, 사용자 시나리오 개선, 전체 UI/UX 리팩토링을 통해 기능을 확장했습니다.
+문의 기능 추가, 사용자 시나리오 개선, UI/UX 리팩토링을 진행하고  
+AWS 배포 환경까지 확장하여 실제 서비스 형태로 구현했습니다.
 
 ---
 
@@ -41,7 +42,7 @@ Spring Boot API 서버와 React를 활용해 구현한 쇼핑몰 서비스입니
 - 로그인 실패 시나리오 처리
 - 기본 이미지 fallback 처리
 - 전체 UI/UX 리팩토링
-
+- AWS 기반 배포 환경 구축 (S3, CloudFront, EC2, ELB, RDS)
   
 ## Tech Stack
 
@@ -62,6 +63,27 @@ Spring Boot API 서버와 React를 활용해 구현한 쇼핑몰 서비스입니
 - Vite
 - Node.js
 
+## AWS 인프라 구성
+
+```
+User
+├─ https://yujin-mall.com
+│ ↓
+│ CloudFront
+│ ↓
+│ S3
+│
+└─ https://api.yujin-mall.com
+↓
+ELB
+↓
+EC2
+↓
+RDS
+
+Image Upload
+EC2 ↔ S3
+```
 ---
 
 ## 프로젝트 구조
@@ -82,20 +104,21 @@ project/
 ```
 ---
 
-## 실행 방법
+## 실행 방법 (로컬)
 
 ### Backend
-- application.yml에 DB 설정 필요
+- application.properties에 DB 설정 필요
 - cd backend
 - ./gradlew bootRun
-
-
 
 ### Frontend
 - cd frontend
 - npm install
 - npm run dev
 
+## 실행 방법 (배포 환경)
+
+URL 접속 : https://yujin-mall.com 
 
 ---
 
