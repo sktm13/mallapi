@@ -10,7 +10,12 @@ export const setCookie = (name: string, value: string, days: number) => {
 
     expires.setUTCDate(expires.getUTCDate() + days) //보관기한 
 
-    return cookies.set(name, value, { path: "/", expires: expires })
+    return cookies.set(name, value, {
+        path: "/",
+        expires: expires,
+        sameSite: "none",
+        secure: true
+    })
 }
 
 

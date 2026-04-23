@@ -46,10 +46,10 @@ public class CustomSecurityConfig {
 
         http.userDetailsService(customUserDetailsService);
 
-
-        //ELB health check 권한 부여
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/health").permitAll()
+                .requestMatchers("/api/member/login").permitAll()
+                .requestMatchers("/api/member/kakao").permitAll()
                 .anyRequest().authenticated());
 
         // 임시 로그인url 생성

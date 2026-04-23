@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Navigate, useNavigate, useSearchParams } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import { getAccessToken, getMemberWithAccessToken } from "../../api/kakaoApi";
 import type { AppDispatch } from "../../store";
 import { useDispatch } from "react-redux";
@@ -7,49 +7,41 @@ import { save } from "../../slices/loginSlice";
 
 const KakaoRedirectPage = () => {
 
-    const [searchParams] = useSearchParams()
-    const authCode = searchParams.get("code")
+    const [searchParams] = useSearchParams();
+    const authCode = searchParams.get("code");
 
-    const dispatch = useDispatch<AppDispatch>()
+    const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
 
-    const navigate = useNavigate()
-
-    //authCode -> Access token
     useEffect(() => {
 
-        if (authCode) {
-            getAccessToken(authCode).then(accessToken => {
-                console.log("access Token ");
-                console.log(accessToken);
+        if (!authCode) return;
 
-                getMemberWithAccessToken(accessToken).then(result => {
-                    console.log("============");
-                    console.log(result);
-                    console.log("============");
+        const handleKakaoLogin = async () => {
+            try {
+                const accessToken = await getAccessToken(authCode);
 
-                    dispatch(save(result))
+                const result = await getMemberWithAccessToken(accessToken);
 
-                    if(result.social == true) {
-                        navigate("/member/modify")
-                    }else{
-                        navigate("/")
-                    }
+                dispatch(save(result));
 
-                })
-            })
+                if (result.social === true) {
+                    navigate("/member/modify");
+                } else {
+                    navigate("/");
+                }
 
-        }
-    }, [authCode])
+            } catch (error) {
+                console.error("Kakao login error:", error);
+                navigate("/member/login"); // 실패 시 fallback
+            }
+        };
 
+        handleKakaoLogin();
 
-    return (
+    }, [authCode, dispatch, navigate]);
 
-        
-        <>
-            <Navigate to={'/'}></Navigate>
-        </>
-
-    )
-}
+    return <div>카카오 로그인 처리 중...</div>;
+};
 
 export default KakaoRedirectPage;

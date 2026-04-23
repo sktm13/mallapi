@@ -39,7 +39,6 @@ public class APILoginSuccessHandler implements AuthenticationSuccessHandler {
         //
 
 
-
         claims.put("accessToken", accessToken);
         claims.put("refreshToken", refreshToken);
 
